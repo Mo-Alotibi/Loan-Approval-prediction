@@ -1,0 +1,19 @@
+# IDE Settings (PyCharm / IntelliJ)
+.idea/
+
+# Virtual Environments
+.venv/
+venv/
+env/
+
+# Data Files
+data/*
+!data/.gitkeep
+
+# Machine Learning Models (Heavy files)
+*.pkl
+
+# Python Cache & Jupyter Checkpoints
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
