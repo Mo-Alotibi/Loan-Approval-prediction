@@ -3,7 +3,6 @@ from sklearn.model_selection import train_test_split
 from src.eda import perform_eda
 from src.preprocessing import preprocess_features
 from src.tokenizer import tokenize, build_vocab
-from src.stemming import apply_stemming
 from src.llm_model import generate_embeddings
 from src.loan_model import train_model, evaluate_model, save_model
 from src.fairness_check import check_fairness
@@ -25,11 +24,11 @@ def run_pipeline(csv_path: str):
 
     print("[4/7] Compiling Custom Transformer Text Embeddings...")
     raw_texts = df_clean['loan_notes'].tolist()
+    # Tokenize the text (Stemming has been removed for modern Transformer compatibility)
     tokenized_texts = [tokenize(txt) for txt in raw_texts]
-    stemmed_texts = [apply_stemming(tokens) for tokens in tokenized_texts]
 
-    vocab = build_vocab(stemmed_texts)
-    embeddings = generate_embeddings(stemmed_texts, vocab)
+    vocab = build_vocab(tokenized_texts)
+    embeddings = generate_embeddings(tokenized_texts, vocab)
 
     emb_df = pd.DataFrame(embeddings, columns=[f"emb_{i}" for i in range(embeddings.shape[1])])
     X = pd.concat([df_clean.drop(columns=['loan_id', 'loan_amount', 'loan_notes']), emb_df], axis=1)
